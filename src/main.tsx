@@ -53,6 +53,20 @@ const ParamEditor: React.FC<ParamEditorProps> = ({ params, model }) => {
     }));
   }, []);
 
+  
+  const getModel = useCallback((): Model => {
+    const paramValuesArray: ParamValue[] = Object.entries(paramValues).map(
+      ([paramId, value]) => ({
+        paramId: Number(paramId),
+        value,
+      })
+    );
+    return {
+      ...model,
+      paramValues: paramValuesArray,
+    };
+  }, [paramValues, model]);
+  
   const handleClick = () => {
     const currentModel = getModel();
     const formattedOutput = params
@@ -66,20 +80,7 @@ const ParamEditor: React.FC<ParamEditorProps> = ({ params, model }) => {
 
     alert(`Введённые значения параметров:\n\n${formattedOutput}`);
   };
-
-  const getModel = useCallback((): Model => {
-    const paramValuesArray: ParamValue[] = Object.entries(paramValues).map(
-      ([paramId, value]) => ({
-        paramId: Number(paramId),
-        value,
-      })
-    );
-    return {
-      ...model,
-      paramValues: paramValuesArray,
-    };
-  }, [paramValues, model]);
-
+  
   // 3. Вспомогательная функция для подсказок под инпутом
   const getHintForParam = (paramName: string): string => {
     const hints: Record<string, string> = {
